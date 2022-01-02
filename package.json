@@ -1,5 +1,5 @@
 {
   "devDependencies": {
-    "web-ext-types": "^3.2.1"
+    "web-ext-types": "focus-browser/ff-ext-types"
   }
 }
