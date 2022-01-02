@@ -1,0 +1,23 @@
+{
+
+    "manifest_version": 2,
+    "name": "emoji-picker",
+    "version": "1.0",
+  
+    "description": "An wide ranged emoji picker extension for firefox based browsers.",
+  
+    "icons": {
+      "48": ""
+    },
+    
+    "permissions": ["contextMenus"],
+
+
+    "content_scripts": [
+      {
+
+      }
+    ]
+  
+  }
+  
