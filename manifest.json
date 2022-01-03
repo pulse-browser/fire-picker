@@ -7,11 +7,20 @@
     "description": "An wide ranged emoji picker extension for firefox based browsers.",
   
     
-    "permissions": ["menus"],
+    "permissions": ["menus", "tabs"],
 
+    "web_accessible_resources": ["window/emoji.json","window/style.css"],
 
     "background": {
         "scripts": ["background.js"]
-    }
+    },
+
+    "content_scripts": [
+        {
+            "all_frames": true,
+            "matches": ["<all_urls>"],
+            "js": ["content.js"]
+        }
+    ]
   
   }

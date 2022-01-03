@@ -5,12 +5,12 @@ console.log('Emoji Picker hello world')
 
 const EMOJI_PICKER = browser.menus.create({
     title: 'Emoji Picker',
-  })
+})
 
 browser.menus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
     case EMOJI_PICKER:
-      console.log(info.selectionText)
-      break
+      
+    break
   }
 })
