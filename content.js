@@ -11,10 +11,10 @@ const categoryEmoji = {
 
 let mouseLoc = { x: 0, y: 0 }
 
-// Get mouse position
+// Get mouse position (There needs to be a better way that is optimized for performance)
 document.addEventListener('mousemove', function (e) {
-  mouseLoc.x = e.clientX
-  mouseLoc.y = e.clientY
+    mouseLoc.x = e.clientX
+    mouseLoc.y = e.clientY
 })
 
 // =============================================================================
