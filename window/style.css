@@ -4,7 +4,7 @@
     box-sizing: border-box;
 	border: 0;
 	border-radius: 5px;
-	background: rgb(228, 228, 228);
+	background: rgb(245, 245, 245);
 	color: rgb(17, 17, 17);
 	font-size: 12px;
 	padding: 5px;
@@ -52,6 +52,40 @@
 
 .fep-item:hover {
     transform: scale(1.2);
+}
+
+.fep-tabs{
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.fep-tab{
+    border: none;
+    background: white;
+    filter: grayscale(100%);
+    font-size: 18px;
+    transition-duration: 100ms;
+    opacity: .5;
+}
+
+.fep-tab:hover{
+    transform: scale(1.2);
+    filter: grayscale(0%);
+    opacity: 1;
+}
+
+.feb-active{
+    background:rgb(114, 114, 114)
+}
+
+.feb-inactive{
+    background: white;
+}
+
+hr{
+    padding-bottom: 100;
+    color:rgba(73, 73, 73, 0.05)
 }
 
 /* 7rows items next to each other*/
