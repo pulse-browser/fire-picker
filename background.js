@@ -11,7 +11,7 @@ const EMOJI_PICKER = browser.menus.create({
 browser.menus.onClicked.addListener(function (info, tab) {
   switch (info.menuItemId) {
     case EMOJI_PICKER:
-      browser.tabs.sendMessage(tab.id, 'slkdfj')
+      browser.tabs.sendMessage(tab.id, info.targetElementId)
     break
   }
 })
