@@ -2,7 +2,12 @@
 
     "manifest_version": 2,
     "name": "emoji-picker",
-    "version": "1.0",
+    "version": "1.0.0",
+    "applications": {
+      "gecko": {
+        "id": "fire-picker@browser.fushra.com"
+      }
+    },
   
     "description": "An wide ranged emoji picker extension for firefox based browsers.",
   
