@@ -4,6 +4,15 @@
 const categoryEmoji = {
   'Smileys & Emotion': '😀',
   'People & Body': '🤦‍♀️',
+  'Animals & Nature': '🐶',
+  'Food & Drink': '🍔',
+  'Travel & Places': '🚗',
+  'Objects': '📦',
+  'Activities': '🎮',
+  'Symbols': '🔥',
+  'Flags': '🇺🇸',
+
+
 }
 
 let mouseLoc = { x: 0, y: 0 }
