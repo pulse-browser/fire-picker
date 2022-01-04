@@ -1,8 +1,6 @@
 //@ts-check
 /// <reference types="web-ext-types"/>
 
-console.log('Emoji Picker hello world')
-
 const EMOJI_PICKER = browser.menus.create({
     title: '😎 Emoji Picker',
 })

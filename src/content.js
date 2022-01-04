@@ -1,15 +1,13 @@
 //@ts-check
 /// <reference types="web-ext-types"/>
 
-
 const categoryEmoji = {
   'Smileys & Emotion': '😀',
-  'People & Body': '🤦‍♀️'
-
+  'People & Body': '🤦‍♀️',
 }
 
-
 let mouseLoc = { x: 0, y: 0 }
+let emojiTarget
 
 // Get mouse position (There needs to be a better way that is optimized for performance)
 document.addEventListener('mousemove', function (e) {
@@ -17,15 +15,22 @@ document.addEventListener('mousemove', function (e) {
   mouseLoc.y = e.clientY
 })
 
-
 //Click detect to close the menu
-// document.addEventListener('click', function (e) {
-  
-//   if (document.getElementById('fep-container') && e.target != document.getElementById('fep-input-search')) {
-//     document.getElementById('fep-container').remove()
-//   }
-// })
+document.addEventListener('click', (event) => {
+  if (document.getElementById('fep-container')) {
+    const container = document.getElementById('fep-container')
+    const containerRect = container.getBoundingClientRect()
 
+    if (
+      !(event.clientX >= containerRect.left &&
+      event.clientX <= containerRect.right &&
+      event.clientY >= containerRect.top &&
+      event.clientY <= containerRect.bottom)
+    ) {
+      document.getElementById('fep-container').remove()
+    }
+  }
+})
 
 browser.runtime.onMessage.addListener(async (message) => {
   if (message.type === 'emojiPicker') {
@@ -33,11 +38,8 @@ browser.runtime.onMessage.addListener(async (message) => {
   }
 })
 
-
 // =============================================================================
 // Main function
-
-let emojiTarget
 
 function setTab(activeTab, activeTabIdentifier) {
   const allTabContents = document.querySelectorAll('.fep-tab-cont')
@@ -47,7 +49,11 @@ function setTab(activeTab, activeTabIdentifier) {
 
   // @ts-ignore
   const allTabIdents = document.querySelectorAll('.fep-tab')
-  allTabContents.forEach((el) => (el.classList.remove('feb-active'), el.classList.add('feb-inactive')))
+  allTabContents.forEach(
+    (el) => (
+      el.classList.remove('feb-active'), el.classList.add('feb-inactive')
+    )
+  )
   document.getElementById(activeTabIdentifier).classList.add('feb-active')
 }
 
@@ -71,7 +77,9 @@ async function popup(x, y) {
     const tabElId = `fep-tab-${id}`
     const tabContId = `fep-tab-cont-${id}`
 
-    const tabEl = html`<button class="fep-tab" id="${tabElId}">${categoryEmoji[category]}</button>`
+    const tabEl = html`<button class="fep-tab" id="${tabElId}">
+      ${categoryEmoji[category]}
+    </button>`
 
     const tabCont = html`<div
       class="fep-tab-cont fep-items"
@@ -82,8 +90,7 @@ async function popup(x, y) {
         .filter((cat) => cat.category == category)
         .map(
           // @ts-ignore
-          ({ emoji, name }) =>
-            html`<button class="fep-item">${emoji}</button>`
+          ({ emoji, name }) => html`<button class="fep-item">${emoji}</button>`
         )
         .map((item) => item.outerHTML)
         .join('')}
@@ -92,7 +99,6 @@ async function popup(x, y) {
     tabEl.addEventListener('click', () => {
       setTab(tabContId, tabElId)
     })
-
 
     tabCont.addEventListener('click', (e) => {
       // @ts-ignore
@@ -108,7 +114,6 @@ async function popup(x, y) {
         emojiTarget.value = [front, end].join(emoji)
 
         document.getElementById('fep-container').remove()
-
       }
     })
 
@@ -127,10 +132,8 @@ async function popup(x, y) {
       placeholder="🔍 Search for emojis by category or tag"
     />
     <!-- The tabs used for controling stuff -->
-    <div class="fep-tabs" id="fep-tabs">  
-    
-    </div>
-    <hr>
+    <div class="fep-tabs" id="fep-tabs"></div>
+    <hr />
     <div id="fep-search-results" class="fep-tabs"></div>
 
     <!-- <div class="fep-items" id="fep-items"></div> -->
@@ -139,28 +142,30 @@ async function popup(x, y) {
   document.body.append(popup)
 
   document.getElementById('fep-tabs').append(...tabs.map(({ tabEl }) => tabEl))
-  document.getElementById('fep-container').append(...tabs.map(({ tabCont }) => tabCont))
+  document
+    .getElementById('fep-container')
+    .append(...tabs.map(({ tabCont }) => tabCont))
 
   // @ts-ignore
   setTimeout(() => document.getElementById('fep-tabs').children[0].click(), 50)
 
-  document.getElementById('fep-input-search').addEventListener('keyup', e => {
-      // @ts-ignore
-      const value = e.target.value
-      const out = document.getElementById('fep-search-results')
-      for (const child of out.children) {
-        child.remove()
-      }
+  document.getElementById('fep-input-search').addEventListener('keyup', (e) => {
+    // @ts-ignore
+    const value = e.target.value
+    const out = document.getElementById('fep-search-results')
+    for (const child of out.children) {
+      child.remove()
+    }
 
-      out.append(...data.filter(({description}) => description.includes(value)))
+    out.append(...data.filter(({ description }) => description.includes(value)))
 
-      // Send garbage to deactivate all of the tabs
-      setTab('sdff', 'sfff')
+    // Send garbage to deactivate all of the tabs
+    setTab('sdff', 'sfff')
   })
 }
 
 // @ts-ignore
-browser.runtime.onMessage.addListener(async targetEl => {
+browser.runtime.onMessage.addListener(async (targetEl) => {
   if (document.getElementById('fep-container')) {
     document.getElementById('fep-container').remove()
   } else {
@@ -177,7 +182,7 @@ browser.runtime.onMessage.addListener(async targetEl => {
   // Get the target element and store it in a global variable
   emojiTarget = browser.menus.getTargetElement(targetEl)
 
-  popup(mouseLoc.x, mouseLoc.y)
+  setTimeout(() => popup(mouseLoc.x, mouseLoc.y), 100)
 })
 
 // =============================================================================
@@ -205,4 +210,3 @@ const html = (h, ...values) => {
 
   return wrapper.children[0]
 }
-
