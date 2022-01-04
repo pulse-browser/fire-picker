@@ -21,6 +21,6 @@ jobs:
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
-        tag_name: 'v${{ github.event.inputs.version }}'
+        tag: 'v${{ github.event.inputs.version }}'
         artifacts: "release.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
