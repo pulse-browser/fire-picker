@@ -1,39 +1,41 @@
-/* rounded searchbar */
+
 /* rounded searchbar */
 .fep-input-search {
     box-sizing: border-box;
-	border: 0;
-	border-radius: 5px;
-	background: rgb(245, 245, 245);
-	color: rgb(17, 17, 17);
-	font-size: 12px;
-	padding: 5px;
+    border: 0;
+    border-radius: 5px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background: var(--fep-color-toolbar_field);
+    color: rgb(17, 17, 17);
+    font-size: 12px;
+    padding: 5px;
     width: 100%;
 }
 
 /* rounded panel */
 .fep-container {
-    background-color: #fff;
+    background-color: var(--fep-color-ntp_background);
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-    height: 350px;
+    height: 370px;
     width: min-content;
 }
-
-
 
 /* 9 colums */
 .fep-items {
     margin: 0;
-    padding: 5px;
+    padding: 3px;
+    padding-bottom: 0px;
     list-style: none;
     display: inline-block;
     vertical-align: top;
-    overflow: scroll;
-    height: 220px;
+    overflow-y: scroll;
+    height: 270px;
     width: calc(100vw / 7);
 }
+
 
 .fep-item {
     font-size: 18px;
@@ -46,7 +48,7 @@
     width: calc(30% / 2.5);
     height: calc(40% / 3);
     border: none;
-    background: white;
+    background: var(--fep-color-ntp_background);
     transition-duration: 100ms;
 }
 
@@ -58,35 +60,40 @@
     list-style: none;
     display: inline-block;
     vertical-align: top;
+    width: 100%;
+    margin-left: 3px;
+    
+    background: var(--fep-color-toolbar);
 }
 
 .fep-tab{
     border: none;
-    background: white;
+    background: var(--fep-color-ntp_background);
     filter: grayscale(100%);
     font-size: 18px;
     transition-duration: 100ms;
     opacity: .5;
+    margin-left: 3px;
 }
 
 .fep-tab:hover{
-    transform: scale(1.2);
     filter: grayscale(0%);
     opacity: 1;
 }
 
 .feb-active{
-    background:rgb(114, 114, 114)
+    background: var(--fep-color-tab_selected);
 }
 
-.feb-inactive{
-    background: white;
-}
 
 hr{
-    padding-bottom: 100;
-    color:rgba(73, 73, 73, 0.05)
+    margin: 1px 0;
+    border-color:rgb(119, 119, 119);
 }
 
+.branding {
+    padding: 10px;
+    color: var(--fep-color-tab_text)
+}
 /* 7rows items next to each other*/
 

@@ -16,21 +16,21 @@ document.addEventListener('mousemove', function (e) {
 })
 
 //Click detect to close the menu
-document.addEventListener('click', (event) => {
-  if (document.getElementById('fep-container')) {
-    const container = document.getElementById('fep-container')
-    const containerRect = container.getBoundingClientRect()
+// document.addEventListener('click', (event) => {
+//   if (document.getElementById('fep-container')) {
+//     const container = document.getElementById('fep-container')
+//     const containerRect = container.getBoundingClientRect()
 
-    if (
-      !(event.clientX >= containerRect.left &&
-      event.clientX <= containerRect.right &&
-      event.clientY >= containerRect.top &&
-      event.clientY <= containerRect.bottom)
-    ) {
-      document.getElementById('fep-container').remove()
-    }
-  }
-})
+//     if (
+//       !(event.clientX >= containerRect.left &&
+//       event.clientX <= containerRect.right &&
+//       event.clientY >= containerRect.top &&
+//       event.clientY <= containerRect.bottom)
+//     ) {
+//       document.getElementById('fep-container').remove()
+//     }
+//   }
+// })
 
 browser.runtime.onMessage.addListener(async (message) => {
   if (message.type === 'emojiPicker') {
@@ -49,11 +49,9 @@ function setTab(activeTab, activeTabIdentifier) {
 
   // @ts-ignore
   const allTabIdents = document.querySelectorAll('.fep-tab')
-  allTabContents.forEach(
-    (el) => (
-      el.classList.remove('feb-active'), el.classList.add('feb-inactive')
-    )
-  )
+  allTabIdents.forEach((el) => {
+    el.classList.remove('feb-active')
+  })
   document.getElementById(activeTabIdentifier).classList.add('feb-active')
 }
 
@@ -81,20 +79,24 @@ async function popup(x, y) {
       ${categoryEmoji[category]}
     </button>`
 
-    const tabCont = html`<div
-      class="fep-tab-cont fep-items"
-      id="${tabContId}"
-      style="display: none;"
-    >
-      ${data
-        .filter((cat) => cat.category == category)
-        .map(
-          // @ts-ignore
-          ({ emoji, name }) => html`<button class="fep-item">${emoji}</button>`
-        )
-        .map((item) => item.outerHTML)
-        .join('')}
-    </div>`
+    const tabCont = html`
+      <slot>
+        <div
+          class="fep-tab-cont fep-items"
+          id="${tabContId}"
+          style="display: none;"
+        >
+          ${data
+            .filter((cat) => cat.category == category)
+            .map(
+              // @ts-ignore
+              ({ emoji }) => html`<button class="fep-item">${emoji}</button>`
+            )
+            .map((item) => item.outerHTML)
+            .join('')}
+        </div>
+      </slot>
+    `
 
     tabEl.addEventListener('click', () => {
       setTab(tabContId, tabElId)
@@ -134,9 +136,7 @@ async function popup(x, y) {
     <!-- The tabs used for controling stuff -->
     <div class="fep-tabs" id="fep-tabs"></div>
     <hr />
-    <div id="fep-search-results" class="fep-tabs"></div>
-
-    <!-- <div class="fep-items" id="fep-items"></div> -->
+    <div id="fep-search-results" class="fep-tab-cont fep-items"></div>
   </div>`
 
   document.body.append(popup)
@@ -145,6 +145,15 @@ async function popup(x, y) {
   document
     .getElementById('fep-container')
     .append(...tabs.map(({ tabCont }) => tabCont))
+
+  //Branding be like
+  const branding = html`<div class="branding">
+    🔥 Fire-Picker by
+    <strong
+      ><a href="https://github.com/focus-browser/browser">Focus</a></strong
+    >
+  </div>`
+  document.getElementById('fep-container').append(branding)
 
   // @ts-ignore
   setTimeout(() => document.getElementById('fep-tabs').children[0].click(), 50)
@@ -157,7 +166,15 @@ async function popup(x, y) {
       child.remove()
     }
 
-    out.append(...data.filter(({ description }) => description.includes(value)))
+    if (value.length < 4) {
+      return
+    }
+
+    out.append(
+      ...data
+        .filter(({ description }) => description.includes(value))
+        .map(({ emoji }) => html`<button class="fep-item">${emoji}</button>`)
+    )
 
     // Send garbage to deactivate all of the tabs
     setTab('sdff', 'sfff')
@@ -184,6 +201,52 @@ browser.runtime.onMessage.addListener(async (targetEl) => {
 
   setTimeout(() => popup(mouseLoc.x, mouseLoc.y), 100)
 })
+
+// =============================================================================
+// Theme consumer
+
+let themeConsumerPort = browser.runtime.connect({ name: 'theme-child' })
+let root = document.documentElement
+
+themeConsumerPort.onMessage.addListener(
+  /**
+   * @param {browser.theme.Theme} theme
+   */
+  // @ts-ignore
+  async (theme) => {
+    const defaultTheme = await (
+      await fetch(browser.runtime.getURL('window/theme_default.json'))
+    ).json()
+
+    const defaultColors = defaultTheme.colors
+
+    console.log(defaultTheme)
+
+    const { colors } = theme
+
+    console.log(defaultColors)
+
+    // Handle colors
+    Object.keys(defaultColors).forEach(color => {
+      let value = defaultColors[color]
+
+      if (colors && colors[color]) {
+        value = colors[color]
+      }
+
+      console.log(`--fep-color-${color}`, value)
+      root.style.setProperty(
+        `--fep-color-${color}`,
+        value
+        // colors[color] || defaultColors[color]
+      )
+    })
+
+    themeConsumerPort.disconnect()
+  }
+)
+
+themeConsumerPort.postMessage({})
 
 // =============================================================================
 // Utility functions
