@@ -5,10 +5,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: Release
+    - name: Package
       uses: thedoctor0/zip-release@master
       with:
         type: 'zip'
         path: 'src/'
         filename: 'release.zip'
         exclusions: '*.git* /*node_modules/* .editorconfig'
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+        artifacts: "release.zip"
+        token: ${{ secrets.GITHUB_TOKEN }}
