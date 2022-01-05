@@ -7,7 +7,7 @@
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
     background: var(--fep-color-toolbar_field);
-    color: rgb(17, 17, 17);
+    color: var(--fep-color-tab_text);
     font-size: 12px;
     padding: 5px;
     width: 100%;
