@@ -144,7 +144,7 @@ async function popup(x, y) {
     />
     <!-- The tabs used for controling stuff -->
     <div class="fep-tabs" id="fep-tabs"></div>
-    <hr />
+    <hr class="feb-seperator"/>
     <div id="fep-search-results" class="fep-tab-cont fep-items"></div>
   </div>`
 
@@ -156,7 +156,7 @@ async function popup(x, y) {
     .append(...tabs.map(({ tabCont }) => tabCont))
 
   //Branding be like
-  const branding = html`<div class="branding">
+  const branding = html`<div class="feb-branding">
     🔥 Fire-Picker by
     <strong
       ><a href="https://github.com/focus-browser/browser">Focus</a></strong

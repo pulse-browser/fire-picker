@@ -21,6 +21,7 @@
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
     height: 370px;
     width: min-content;
+    overflow: hidden;
 }
 
 /* 9 colums */
@@ -62,7 +63,6 @@
     vertical-align: top;
     width: 100%;
     margin-left: 3px;
-    
     background: var(--fep-color-toolbar);
 }
 
@@ -73,7 +73,6 @@
     font-size: 18px;
     transition-duration: 100ms;
     opacity: .5;
-    margin-left: 3px;
 }
 
 .fep-tab:hover{
@@ -86,12 +85,12 @@
 }
 
 
-hr{
+.feb-seperator{
     margin: 1px 0;
     border-color:rgb(119, 119, 119);
 }
 
-.branding {
+.feb-branding {
     padding: 10px;
     color: var(--fep-color-tab_text)
 }
