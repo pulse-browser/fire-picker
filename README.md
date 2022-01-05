@@ -32,6 +32,8 @@ A wide ranged emoji picker extension for firefox based browsers made with pure j
 ## Preview
 
 ![Preview Image, Release 1.1.0](https://raw.githubusercontent.com/focus-browser/fire-picker/main/images/fire-picker-preview.png)
+
+
 *Preview Image, Release 1.1.0*
 
   
