@@ -12,12 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Package
-      uses: thedoctor0/zip-release@master
-      with:
-        type: 'zip'
-        path: 'src/'
-        filename: 'release.zip'
-        exclusions: '*.git* /*node_modules/* .editorconfig'
+      run: |
+        zip -9 -r -q ./release.zip ./src/*
     - name: Upload Release
       uses: ncipollo/release-action@v1
       with:
