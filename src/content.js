@@ -159,7 +159,7 @@ async function popup(x, y) {
   const branding = html`<div class="feb-branding">
     🔥 Fire-Picker by
     <strong
-      ><a href="https://github.com/focus-browser/browser">Focus</a></strong
+      ><a href="https://github.com/focus-browser/browser">Lepton</a></strong
     >
   </div>`
   document.getElementById('fep-container').append(branding)
