@@ -55,7 +55,6 @@ class TabManager {
       style="position: absolute; top: ${y}px; left: ${x}px; z-index: 99999999;"
     >
       <div class="${tabsContainerId}" id="${tabsContainerId}"></div>
-      <hr class="feb-seperator" />
     </div>`
 
     this.container = popup
@@ -203,7 +202,7 @@ async function popup(x, y) {
   })
 
   //Branding be like
-  const branding = html`<div class="feb-branding">
+  const branding = html`<div class="fep-branding">
     🔥 Fire-Picker by
     <strong
       ><a href="https://github.com/pulse-browser/browser">Pulse</a></strong
