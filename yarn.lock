@@ -2,6 +2,6 @@
 # yarn lockfile v1
 
 
-"web-ext-types@focus-browser/ff-ext-types":
-  "resolved" "git+ssh://git@github.com/focus-browser/ff-ext-types.git#548fbd101482d372780f469cf08d5ae04f199fe6"
-  "version" "3.2.1"
+web-ext-types@pulse-browser/ff-ext-types:
+  version "3.2.1"
+  resolved "https://codeload.github.com/pulse-browser/ff-ext-types/tar.gz/548fbd101482d372780f469cf08d5ae04f199fe6"
