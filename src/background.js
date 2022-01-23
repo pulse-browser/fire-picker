@@ -4,6 +4,7 @@
 const EMOJI_PICKER = browser.menus.create({
   title: 'Emoji Picker',
   contexts: ['editable'],
+  documentUrlPatterns: ['*://*/*'],
 })
 
 browser.menus.onClicked.addListener(function (info, tab) {
