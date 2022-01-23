@@ -15,30 +15,19 @@
 /* rounded panel */
 .fep-container {
   background-color: var(--fep-color-ntp_background);
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-
-  height: 370px;
   width: 300px;
-
-  width: min-content;
   overflow: hidden;
 }
 
-/* 9 colums */
 .fep-items {
-  margin: 0;
   padding: 3px;
-  padding-bottom: 0px;
   overflow-y: scroll;
-  height: 270px;
+  max-height: 270px;
   width: 100%;
 
-  display: grid;
-  /* 9 columns */
-  grid-template-columns: repeat(9, 1fr);
-  gap: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .fep-item {
@@ -95,3 +84,11 @@
   color: var(--fep-color-tab_text);
 }
 /* 7rows items next to each other*/
+
+#fep-content-search {
+  display: block;
+}
+
+#fep-search-input {
+  width: 100%;
+}

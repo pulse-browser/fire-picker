@@ -1,5 +1,6 @@
 //@ts-check
-/// <reference types="web-ext-types"/>
+/// <reference types="web-ext-types" />
+/// <reference types="./content" />
 
 const appCssIdent = 'fep'
 const ident = (id) => `${appCssIdent}-${id}`
@@ -23,12 +24,6 @@ let emojiTarget
 document.addEventListener('mousemove', function (e) {
   mouseLoc.x = e.clientX
   mouseLoc.y = e.clientY
-})
-
-browser.runtime.onMessage.addListener(async (message) => {
-  if (message.type === 'emojiPicker') {
-    popup(mouseLoc.x, mouseLoc.y)
-  }
 })
 
 class Tab {
@@ -59,12 +54,6 @@ class TabManager {
       id="fep-container"
       style="position: absolute; top: ${y}px; left: ${x}px; z-index: 99999999;"
     >
-      <input
-        class="fep-input-search"
-        id="fep-input-search"
-        placeholder="🔍 Search for emojis by category or tag"
-      />
-      <!-- The tabs used for controling stuff -->
       <div class="${tabsContainerId}" id="${tabsContainerId}"></div>
       <hr class="feb-seperator" />
     </div>`
@@ -114,7 +103,7 @@ class TabManager {
     // @ts-ignore
     allTabContents.forEach((el) => (el.style.display = 'none'))
     document.getElementById(ident(`content-${this.activeTab}`)).style.display =
-      'grid'
+      ''
 
     // @ts-ignore
     const allTabIdents = document.querySelectorAll(`.${ident('tab')}`)
@@ -134,9 +123,9 @@ async function popup(x, y) {
     'font-size: 20px; text-decoration: underline;'
   )
 
-  const data = await (
-    await fetch(browser.runtime.getURL('window/emoji.json'))
-  ).json()
+  const /** @type {import("./content").EmojiList} */ data = await (
+      await fetch(browser.runtime.getURL('window/emoji.json'))
+    ).json()
 
   const tabContainer = new TabManager(document.body, x, y)
 
@@ -166,20 +155,12 @@ async function popup(x, y) {
         const results = document.getElementById(ident('search-results'))
 
         results.innerHTML = ''
-        results.append(
-          ...data
-            .filter(
-              (emoji) =>
-                emoji.description.includes(value) ||
-                emoji.aliases.some((alias) => alias.includes(value)) ||
-                emoji.tags.some((tag) => tag.includes(value))
-            )
-            .map(
-              // @ts-ignore
-              ({ emoji }) => html`<button class="fep-item">${emoji}</button>`
-            )
-        )
+        results.append(...generateSearchResults(value, data))
       })
+
+    document
+      .getElementById(ident('search-results'))
+      .append(...generateSearchResults('', data))
   }
 
   const catagories = data
@@ -194,12 +175,7 @@ async function popup(x, y) {
       title,
       html`
         <slot>
-          ${data
-            .filter((cat) => cat.category == category)
-            .map(
-              // @ts-ignore
-              ({ emoji }) => html`<button class="fep-item">${emoji}</button>`
-            )
+          ${generateSearchResults(category, data)
             .map((item) => item.outerHTML)
             .join('')}
         </slot>
@@ -230,7 +206,7 @@ async function popup(x, y) {
   const branding = html`<div class="feb-branding">
     🔥 Fire-Picker by
     <strong
-      ><a href="https://github.com/focus-browser/browser">Lepton</a></strong
+      ><a href="https://github.com/pulse-browser/browser">Pulse</a></strong
     >
   </div>`
   tabContainer.container.append(branding)
@@ -314,6 +290,28 @@ function categoryId(name) {
     .toLowerCase()
     .replace(/\s/g, '-')
     .replace(/[^a-z0-9-]/g, '')
+}
+
+/**
+ * Generates search results for you
+ * @param {string} query The query string you are searching for
+ * @param {import("./content").EmojiList} emoji The emoji available
+ *
+ * @returns {Element[]}
+ */
+function generateSearchResults(query, emoji) {
+  return emoji
+    .filter(
+      (emoji) =>
+        emoji.description.includes(query) ||
+        emoji.aliases.some((alias) => alias.includes(query)) ||
+        emoji.tags.some((tag) => tag.includes(query)) ||
+        emoji.category === query
+    )
+    .map(
+      // @ts-ignore
+      ({ emoji }) => html`<button class="fep-item">${emoji}</button>`
+    )
 }
 
 const html = (h, ...values) => {
